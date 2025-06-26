@@ -8,34 +8,36 @@ Project Category: Advanced
 This project involves analyzing a Spotify dataset with various attributes about tracks, albums, and artists using **SQL**. It covers an end-to-end process of normalizing a denormalized dataset, performing SQL queries of varying complexity (easy, medium, and advanced), and optimizing query performance. The primary goals of the project are to practice advanced SQL skills and generate valuable insights from the dataset.
 
 ```sql
--- create table
-DROP TABLE IF EXISTS spotify;
-CREATE TABLE spotify (
-    artist VARCHAR(255),
-    track VARCHAR(255),
-    album VARCHAR(255),
-    album_type VARCHAR(50),
-    danceability FLOAT,
-    energy FLOAT,
-    loudness FLOAT,
-    speechiness FLOAT,
-    acousticness FLOAT,
-    instrumentalness FLOAT,
-    liveness FLOAT,
-    valence FLOAT,
-    tempo FLOAT,
-    duration_min FLOAT,
-    title VARCHAR(255),
-    channel VARCHAR(255),
-    views FLOAT,
-    likes BIGINT,
-    comments BIGINT,
-    licensed BOOLEAN,
-    official_video BOOLEAN,
-    stream BIGINT,
-    energy_liveness FLOAT,
-    most_played_on VARCHAR(50)
+create table spotify_data(
+     Artist	text,
+	 Track	text,
+	 Album	text,
+	 Album_type	text,
+	 Danceability	float,
+	 Energy	float,
+	 Loudness	float,
+	 Speechiness	float,
+	 Acousticness	float,
+	 Instrumentalness	float,
+	 Liveness	float,
+	 Valence	float,
+	 Tempo	float,
+	 Duration_min	float,
+	 Title	text,
+	 Channel	text,
+	 Views_   int,
+	 Likes	int,
+	 Comments_ int,
+	 Licensed	text,
+	 official_video	text,
+	 Stream	 int,
+	 EnergyLiveness	float,
+	 most_playedon text
 );
+alter table spotify_data alter Views_ type bigint;
+alter table spotify_data alter Likes type bigint;
+alter table spotify_data alter Comments_ type bigint;
+alter table spotify_data alter Stream type bigint;
 ```
 ## Project Steps
 
@@ -87,20 +89,12 @@ In advanced stages, the focus shifts to improving query performance. Some optimi
 2. Write a query to find tracks where the liveness score is above the average.
 3. **Use a `WITH` clause to calculate the difference between the highest and lowest energy values for tracks in each album.**
 ```sql
-WITH cte
-AS
-(SELECT 
-	album,
-	MAX(energy) as highest_energy,
-	MIN(energy) as lowest_energery
-FROM spotify
-GROUP BY 1
+with cte as(
+select album,track,energy from spotify_data
+order by 3 desc
 )
-SELECT 
-	album,
-	highest_energy - lowest_energery as energy_diff
-FROM cte
-ORDER BY 2 DESC
+select album,max(energy)-min(energy) as diff from cte
+group by 1 order by 2 desc;
 ```
    
 5. Find tracks where the energy-to-liveness ratio is greater than 1.2.
@@ -127,7 +121,7 @@ To improve query performance, we carried out the following optimization process:
     - To optimize the query performance, we created an index on the `artist` column. This ensures faster retrieval of rows where the artist is queried.
     - **SQL command** for creating the index:
       ```sql
-      CREATE INDEX idx_artist ON spotify_tracks(artist);
+     create index artist_index on spotify_data(artist);
       ```
 
 - **Performance Analysis After Index Creation**
