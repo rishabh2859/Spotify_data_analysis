@@ -121,7 +121,7 @@ To improve query performance, we carried out the following optimization process:
     - To optimize the query performance, we created an index on the `artist` column. This ensures faster retrieval of rows where the artist is queried.
     - **SQL command** for creating the index:
       ```sql
-     create index artist_index on spotify_data(artist);
+      create index artist_index on spotify_data(artist);
       ```
 
 - **Performance Analysis After Index Creation**
