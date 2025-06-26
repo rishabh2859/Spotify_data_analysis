@@ -83,3 +83,8 @@ where ratio>1.2 order by ratio;
 --using window functions.
 select track,Views_,Likes,sum(Likes) over(order by Views_)
 from spotify_data;
+--Query Optimization
+create index artist_index on spotify_data(artist);
+explain analyze
+select artist,track,Views_ from spotify_data where artist='Gorillaz' and most_playedon='Youtube'
+order by stream desc limit 25;
